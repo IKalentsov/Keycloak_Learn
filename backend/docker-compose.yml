@@ -1,0 +1,23 @@
+﻿services:
+  keycloak_learn:
+    image: ${DOCKER_REGISTRY-}keycloaklearn
+    build:
+      context: .
+      dockerfile: src/Dockerfile
+    ports:
+     - 5000:8080
+     - 5001:8081
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    command: start-dev
+    environment:
+      - KC_HEALTH_ENABLED=true
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+    volumes:
+      - ./.containers/identity:/opt/keycloak/data
+    ports:
+      - '8080:8080'
+    
